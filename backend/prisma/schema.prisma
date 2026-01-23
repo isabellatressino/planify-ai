@@ -1,0 +1,50 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                       String      @id @default(auto()) @map("_id") @db.ObjectId
+  name                     String
+  email                    String      @unique
+  emailHash                String?
+  password                 String
+  credits                  Int         @default(3)
+  createdAt                DateTime    @default(now())
+  plans                    StudyPlan[]
+
+  @@index([emailHash])
+}
+
+model StudyPlan {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  goal      String
+  title     String
+  level     String
+  hoursDay  Float
+  deadline  Int
+  content   Json
+  progress  Int      @default(0)
+  status    PlanStatus @default(ACTIVE)
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum PlanStatus {
+  ACTIVE
+  COMPLETED
+}
+
+model EmailCreditLedger {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  emailHash           String   @unique
+  freeCreditsTotal    Int      @default(3)
+  freeCreditsUsed     Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

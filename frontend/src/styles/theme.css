@@ -1,0 +1,13 @@
+@theme {
+    --color-primary: #17b0cf;
+    --color-primary-hover: #1492AC;
+
+    --color-background: #16171A;
+    --color-surface: #212328;
+
+    --color-text-titles: #F4F4F4;
+    --color-text-body: #7F8D9F;
+
+    --font-default: "Inter", sans-serif;
+    --font-display: "Space Grotesk", sans-serif;
+}
